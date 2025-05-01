@@ -9,7 +9,8 @@ APPROVED_BREEDS = [
     "Pointer"
 ]
 
-
+'''
+Below is the original code before we implementing： "using decorator to define a property"
 class Dog:
     def __init__(self, name='Fido', breed='Mastiff'):
         self.name = name
@@ -37,3 +38,49 @@ class Dog:
             raise ValueError("Breed must be in list of approved breeds.")
 
     breed = property(get_breed, set_breed)
+'''
+
+class Dog:
+    def __init__(self, name='Fido', breed='Mastiff'):
+        self.name = name
+        self.breed = breed
+
+    @property
+    def name(self):
+        """The name property"""
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        """Name must be a string between 1 and 25 characters in length"""
+        if isinstance(name, str) and 1 <= len(name) <= 25:
+            self._name = name
+        else:
+            raise ValueError(
+                "Name must be string between 1 and 25 characters."
+            )
+
+    @property
+    def breed(self):
+        """The breed property"""
+        return self._breed
+
+    @breed.setter
+    def breed(self, breed):
+        """Breed must be in the list of approved breeds"""
+        if breed in APPROVED_BREEDS:
+            self._breed = breed
+        else:
+            raise ValueError("Breed must be in list of approved breeds.")
+        
+
+'''
+    Let's summarize the important points when creating properties with 
+    the decorator approach:
+
+        * The @property decorator must decorate the getter method, which 
+          should have the same name as the attribute.
+        * The docstring must go in the getter method.
+        * The setter and deleter methods must be decorated with the same 
+          name as the getter method plus .setter and .deleter, respectively.
+'''
